@@ -1,0 +1,2 @@
+firebase-js-angular-module
+==========================
