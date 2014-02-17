@@ -7,12 +7,18 @@ describe('Service: firebaseJs', function () {
 
   // instantiate service
   var firebaseJs;
-  beforeEach(inject(function (_firebaseJs_) {
-    firebaseJs = _firebaseJs_;
+  beforeEach(inject(function (FirebaseJs) {
+    firebaseJs = FirebaseJs;
   }));
 
-  it('should do something', function () {
+  it('should inject a FirebaseJs service object', function () {
     expect(!!firebaseJs).toBe(true);
+  });
+
+  it('should expose a Firebase constructor', function () {
+    var url = 'https://my.firebase.io';
+    var instance = new firebaseJs.Firebase(url);
+    expect(instance.url).toBe(url); 
   });
 
 });
