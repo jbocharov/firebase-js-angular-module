@@ -8,5 +8,11 @@ angular.module('firebaseJsAngularModuleApp')
     this.Firebase = function FirebaseFakeConstructor(url) {
       console.log('Runnning constructor with url: ' + url);
       this.url = url;
-    }
+    };
+
+    this.FirebaseJs = function FirebaseRealConstructor() {
+      /* jshint ignore:start */
+      @@include('../../bower_components/firebase/firebase.js');
+      /* jshint ignore:end */ 
+    };
   });

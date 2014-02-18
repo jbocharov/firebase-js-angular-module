@@ -313,6 +313,21 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    includereplace: {
+      dist: {
+        files: [
+        ]
+      },
+      test: {
+        files: [
+          {
+            src: 'app/scripts/services/firebase-js.js',
+            dest: 'dist/test/firebase-js.js'
+            //, expand: true
+          }
+        ]
+      }
     }
   });
 
