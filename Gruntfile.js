@@ -315,15 +315,11 @@ module.exports = function (grunt) {
       }
     },
     includereplace: {
-      dist: {
-        files: [
-        ]
-      },
-      test: {
+      firebase: {
         files: [
           {
-            src: 'app/scripts/services/firebase-js.js',
-            dest: 'dist/test/firebase-js.js'
+            src: 'firebase-js.js',
+            dest: 'app/scripts/services/firebase-js.js'
             //, expand: true
           }
         ]
@@ -347,6 +343,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', [
+    'includereplace:firebase',
     'clean:server',
     'concurrent:test',
     'autoprefixer',
