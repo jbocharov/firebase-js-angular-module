@@ -352,6 +352,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'includereplace:firebase',
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',

@@ -6,14 +6,27 @@ angular.module('firebaseJsAngularModuleApp')
     console.log('Running the FirebaseJs service constructor');
     var Firebase;
 
-    this.Firebase = function FirebaseFakeConstructor(url) {
-      console.log('Runnning constructor with url: ' + url);
-      this.url = url;
-    };
+    var restoreWindowDotFirebase = (function () {
+      function deleteWindowDotFirebase () { delete window.Firebase };
 
-    this.FirebaseJs = function FirebaseRealConstructor() {
-      /* jshint ignore:start */
-      (function() {function g(a){throw a;}var aa=void 0,j=!0,k=null,l=!1;function ba(a){return function(){return this[a]}}function o(a){return function(){return a}}var r,ca=this;function da(){}function ea(a){a.mb=function(){return a.ed?a.ed:a.ed=new a}}
+      if (! window.hasOwnProperty('Firebase')) { 
+        return deleteWindowDotFirebase; 
+      }
+      
+      var originalWindowDotFirebase = window.Firebase;
+      deleteWindowDotFirebase();
+      return function restoreWindowDotFirebase() {
+          window.Firebase = originalWindowDotFirebase;
+      };
+    })();
+
+    function bindToWindow(func) {
+      return func.bind(window);
+    }
+
+    /* jshint ignore:start */
+    bindToWindow
+    (function() {function g(a){throw a;}var aa=void 0,j=!0,k=null,l=!1;function ba(a){return function(){return this[a]}}function o(a){return function(){return a}}var r,ca=this;function da(){}function ea(a){a.mb=function(){return a.ed?a.ed:a.ed=new a}}
 function fa(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
 else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function s(a){return a!==aa}function ga(a){var b=fa(a);return"array"==b||"object"==b&&"number"==typeof a.length}function u(a){return"string"==typeof a}function ha(a){return"number"==typeof a}function ia(a){var b=typeof a;return"object"==b&&a!=k||"function"==b}Math.floor(2147483648*Math.random()).toString(36);function ja(a,b,c){return a.call.apply(a.bind,arguments)}
 function ka(a,b,c){a||g(Error());if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}function v(a,b,c){v=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ja:ka;return v.apply(k,arguments)}function la(a,b){function c(){}c.prototype=b.prototype;a.Yd=b.prototype;a.prototype=new c};function ma(a){a=String(a);if(/^\s*$/.test(a)?0:/^[\],:{}\s\u2028\u2029]*$/.test(a.replace(/\\["\\\/bfnrtu]/g,"@").replace(/"[^"\\\n\r\u2028\u2029\x00-\x08\x10-\x1f\x80-\x9f]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:[\s\u2028\u2029]*\[)+/g,"")))try{return eval("("+a+")")}catch(b){}g(Error("Invalid JSON string: "+a))}function na(){this.gc=aa}
@@ -161,8 +174,11 @@ H.prototype.setOnDisconnect=H.prototype.Sd;H.prototype.hb=function(a,b,c){z("Fir
 H.goOffline=function(){z("Firebase.goOffline",0,0,arguments.length);Y.mb().Ia()};H.goOnline=function(){z("Firebase.goOnline",0,0,arguments.length);Y.mb().ab()};function Tb(a,b){y(!b||a===j||a===l,"Can't turn on custom loggers persistently.");a===j?("undefined"!==typeof console&&("function"===typeof console.log?Rb=v(console.log,console):"object"===typeof console.log&&(Rb=function(a){console.log(a)})),b&&ob.set("logging_enabled",j)):a?Rb=a:(Rb=k,ob.remove("logging_enabled"))}H.enableLogging=Tb;
 H.ServerValue={TIMESTAMP:{".sv":"timestamp"}};H.INTERNAL=Z;H.Context=Y;})();
 ;
-      /* jshint ignore:end */ 
-    };
+    /* jshint ignore:end */ 
 
-    this.getFirebase = function () { return Firebase; }
+    console.log('window.Firebase', window.Firebase);
+    this.Firebase = window.Firebase;
+
+    restoreWindowDotFirebase();
+    this.getFirebase = function () { return this.Firebase; }
   });

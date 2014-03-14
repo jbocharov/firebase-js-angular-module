@@ -6,16 +6,32 @@ angular.module('firebaseJsAngularModuleApp')
     console.log('Running the FirebaseJs service constructor');
     var Firebase;
 
-    this.Firebase = function FirebaseFakeConstructor(url) {
-      console.log('Runnning constructor with url: ' + url);
-      this.url = url;
-    };
+    var restoreWindowDotFirebase = (function () {
+      function deleteWindowDotFirebase () { delete window.Firebase };
 
-    this.FirebaseJs = function FirebaseRealConstructor() {
-      /* jshint ignore:start */
-      @@include('app/bower_components/firebase/firebase.js');
-      /* jshint ignore:end */ 
-    };
+      if (! window.hasOwnProperty('Firebase')) { 
+        return deleteWindowDotFirebase; 
+      }
+      
+      var originalWindowDotFirebase = window.Firebase;
+      deleteWindowDotFirebase();
+      return function restoreWindowDotFirebase() {
+          window.Firebase = originalWindowDotFirebase;
+      };
+    })();
 
-    this.getFirebase = function () { return Firebase; }
+    function bindToWindow(func) {
+      return func.bind(window);
+    }
+
+    /* jshint ignore:start */
+    bindToWindow
+    @@include('app/bower_components/firebase/firebase.js');
+    /* jshint ignore:end */ 
+
+    console.log('window.Firebase', window.Firebase);
+    this.Firebase = window.Firebase;
+
+    restoreWindowDotFirebase();
+    this.getFirebase = function () { return this.Firebase; }
   });
