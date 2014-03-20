@@ -6,19 +6,8 @@ angular.module('firebaseJsAngularModuleApp')
 
     var windowObj = window;
 
-    var restoreWindowDotFirebase = (function () {
-      function deleteWindowDotFirebase () { delete windowObj.Firebase };
-
-      if (! windowObj.hasOwnProperty('Firebase')) { 
-        return deleteWindowDotFirebase; 
-      }
-      
-      var originalWindowDotFirebase = windowObj.Firebase;
-      deleteWindowDotFirebase();
-      return function restoreWindowDotFirebase() {
-          windowObj.Firebase = originalWindowDotFirebase;
-      };
-    })();
+    var windowHadFirebase = windowObj.hasOwnProperty('Firebase');
+    var windowDotFirebase = windowHadFirebase ? windowObj.Firebase : undefined;
 
     function bindToWindow(func) {
       return func.bind(windowObj);
@@ -203,5 +192,9 @@ H.ServerValue={TIMESTAMP:{".sv":"timestamp"}};H.INTERNAL=Z;H.Context=Y;})();
 
     this.Firebase = windowObj.Firebase;
 
-    restoreWindowDotFirebase();
+    if (windowHadFirebase) {
+      window.Firebase = windowDotFirebase;
+    } else {
+      delete windowObj.Firebase;
+    }
   });

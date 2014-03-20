@@ -6,19 +6,8 @@ angular.module('firebaseJsAngularModuleApp')
 
     var windowObj = window;
 
-    var restoreWindowDotFirebase = (function () {
-      function deleteWindowDotFirebase () { delete windowObj.Firebase };
-
-      if (! windowObj.hasOwnProperty('Firebase')) { 
-        return deleteWindowDotFirebase; 
-      }
-      
-      var originalWindowDotFirebase = windowObj.Firebase;
-      deleteWindowDotFirebase();
-      return function restoreWindowDotFirebase() {
-          windowObj.Firebase = originalWindowDotFirebase;
-      };
-    })();
+    var windowHadFirebase = windowObj.hasOwnProperty('Firebase');
+    var windowDotFirebase = windowHadFirebase ? windowObj.Firebase : undefined;
 
     function bindToWindow(func) {
       return func.bind(windowObj);
@@ -56,5 +45,9 @@ angular.module('firebaseJsAngularModuleApp')
 
     this.Firebase = windowObj.Firebase;
 
-    restoreWindowDotFirebase();
+    if (windowHadFirebase) {
+      windowObj.Firebase = windowDotFirebase;
+    } else {
+      delete windowObj.Firebase;
+    }
   });
