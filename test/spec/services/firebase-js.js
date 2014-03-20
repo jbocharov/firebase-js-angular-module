@@ -1,6 +1,7 @@
 'use strict';
 
 /* global Firebase */
+/* global window */
 describe('Service: firebaseJs', function () {
 
   // load the service's module
@@ -17,15 +18,9 @@ describe('Service: firebaseJs', function () {
   });
 
   it('should expose a Firebase constructor', function () {
-    var url = 'https://my.firebase.io';
+    var url = 'https://my.firebaseio.com';
     var instance = new firebaseJs.Firebase(url);
-    expect(instance.url).toBe(url); 
-  });
-
-  it('should not touch the Firebase global', function () {
-    //var FirebaseGlobal = Firebase;
-
-    //expect(!!FirebaseGlobal).toBe(false);
+    expect(typeof instance).toBe('object'); 
   });
 
   it('should iniatialize the Firebase local variable', function () {
