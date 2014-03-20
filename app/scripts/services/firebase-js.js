@@ -21,13 +21,7 @@ angular.module('firebaseJsAngularModuleApp')
     })();
 
     function bindToWindow(func) {
-      console.log('func', func);
-      console.log('func.bind', func.bind);
-      var bind = Function.prototype.bind;
-      console.log('bind', bind);
-      var boundToWindowObj = func.bind(windowObj);
-      console.log('boundToWindowObj', boundToWindowObj);
-      return boundToWindowObj;
+      return func.bind(windowObj);
     }
 
     /* jshint ignore:start */
@@ -210,6 +204,4 @@ H.ServerValue={TIMESTAMP:{".sv":"timestamp"}};H.INTERNAL=Z;H.Context=Y;})();
     this.Firebase = windowObj.Firebase;
 
     restoreWindowDotFirebase();
-
-    this.getFirebase = function () { return this.Firebase; }
   });

@@ -8,26 +8,20 @@ describe('Service: firebaseJs', function () {
   beforeEach(module('firebaseJsAngularModuleApp'));
 
   // instantiate service
-  var firebaseJs;
+  var Firebase;
+
   beforeEach(inject(function (FirebaseJs) {
-    firebaseJs = FirebaseJs;
+    Firebase = FirebaseJs.Firebase;
   }));
 
-  it('should inject a FirebaseJs service object', function () {
-    expect(!!firebaseJs).toBe(true);
+  it('should expose a Firebase member', function () {
+    expect(!! Firebase).toBe(true);
   });
 
-  it('should expose a Firebase constructor', function () {
+  it('should allow a Firebase connection to be created', function () {
     var url = 'https://my.firebaseio.com';
-    var instance = new firebaseJs.Firebase(url);
+    var instance = new Firebase(url);
     expect(typeof instance).toBe('object'); 
-  });
-
-  it('should iniatialize the Firebase local variable', function () {
-    var Firebase = firebaseJs.getFirebase();
-
-    expect(!!Firebase).toBe(true);
-    console.log(Firebase);
   });
 
 });
