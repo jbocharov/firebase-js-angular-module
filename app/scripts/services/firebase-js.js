@@ -193,7 +193,7 @@ H.ServerValue={TIMESTAMP:{".sv":"timestamp"}};H.INTERNAL=Z;H.Context=Y;})();
     this.Firebase = windowObj.Firebase;
 
     if (windowHadFirebase) {
-      window.Firebase = windowDotFirebase;
+      windowObj.Firebase = windowDotFirebase;
     } else {
       delete windowObj.Firebase;
     }
